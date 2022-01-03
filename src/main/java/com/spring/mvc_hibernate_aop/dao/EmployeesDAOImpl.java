@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,10 +15,15 @@ public class EmployeesDAOImpl implements EmployeesDAO{
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
     public List<Employee> getAllEmployees() {
         Session session = sessionFactory.getCurrentSession();
         List<Employee> from_employee = session.createQuery("from Employee", Employee.class).getResultList();
         return from_employee;
+    }
+
+    @Override
+    public void saveEmployee(Employee employee) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.save(employee);
     }
 }
